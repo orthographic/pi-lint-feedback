@@ -1,0 +1,17 @@
+{
+  "name": "pi-lint-feedback",
+  "version": "1.0.0",
+  "description": "Deterministic lint feedback for agent-driven edits: after every write/edit, run the language linter on the touched file and append diagnostics to the tool result.",
+  "keywords": ["pi-package", "pi", "lint", "oxlint", "feedback"],
+  "license": "MIT",
+  "type": "module",
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "dependencies": {
+    "oxlint": "1.80.0"
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
