@@ -11,7 +11,7 @@ Ships oxlint bundled for JS/TS. Other languages no-op unless their linter is ins
 ## Install
 
 ```bash
-pi install git:github.com/<you>/pi-lint-feedback@v1
+pi install git:github.com/orthographic/pi-lint-feedback@v1
 ```
 
 ## How it works
