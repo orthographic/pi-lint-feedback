@@ -21,6 +21,7 @@ pi install git:github.com/<you>/pi-lint-feedback@v1
 - Uses the project's own linter when available, else the bundled oxlint.
 - Lint infrastructure failures (missing binary, timeout) never block the agent — they no-op.
 - Output is bounded to Pi's standard truncation policy.
+- Byte-identical findings on a file are injected only once (deduped) to avoid re-reading the same text.
 
 ## Security
 

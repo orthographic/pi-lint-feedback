@@ -85,6 +85,12 @@ test("lint feedback uses bundled Oxlint, prefers the project version, and stays 
 	assert.match(fallbackFeedback, /^oxlint findings in src\/example\.ts/);
 	assert.match(fallbackFeedback, /Lint output truncated/);
 	assert.ok(Buffer.byteLength(fallbackFeedback) < 52 * 1024);
+
+	const dedupResult = await bundled.handler(
+		{ toolName: "write", isError: false, input: { path: "@src/example.ts" }, content: [] },
+		{ cwd: bundled.cwd },
+	);
+	assert.equal(dedupResult, undefined, "unchanged findings on a repeated edit should be skipped");
 	assert.equal(
 		await bundled.handler(
 			{ toolName: "edit", isError: true, input: { path: "@src/example.ts" }, content: [] },

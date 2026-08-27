@@ -11,6 +11,7 @@
  */
 
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { createRequire } from "node:module";
 import { dirname, join, resolve } from "node:path";
@@ -45,6 +46,7 @@ const LINTERS: Array<[RegExp, Linter]> = [
 ];
 
 const commandCache = new Map<string, Command>();
+const lastFindings = new Map<string, string>();
 function findCommand(linter: Linter, cwd: string): Command {
 	const key = linter.bin + "@" + cwd;
 	const cached = commandCache.get(key);
@@ -120,6 +122,11 @@ export default function (pi: ExtensionAPI) {
 
 		const findings = await lint(command, linter, resolve(ctx.cwd, path), ctx.cwd, ctx.signal);
 		if (!findings) return undefined;
+
+		// Skip re-injecting byte-identical findings on repeated edits of the same file.
+		const digest = createHash("sha1").update(findings).digest("hex");
+		if (lastFindings.get(path) === digest) return undefined;
+		lastFindings.set(path, digest);
 
 		return {
 			content: [
